@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fitness Tracker App</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 500px;
+      background: white;
+      margin: 40px auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #4CAF50;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    .summary p {
+      background: #f0f0f0;
+      padding: 10px;
+      border-radius: 6px;
+      margin: 6px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🏃 Fitness Tracker</h1>
+
+    <form id="fitnessForm">
+      <input type="date" id="date" required>
+      <input type="number" id="steps" placeholder="Steps" required>
+      <input type="number" id="workout" placeholder="Workout Time (mins)" required>
+      <input type="number" id="calories" placeholder="Calories Burned" required>
+      <button type="submit">Add Entry</button>
+    </form>
+
+    <div class="summary">
+      <h2>📊 Summary</h2>
+      <p id="totalSteps">Total Steps: 0</p>
+      <p id="totalWorkout">Workout Time: 0 mins</p>
+      <p id="totalCalories">Calories Burned: 0</p>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('fitnessForm');
+    const totalSteps = document.getElementById('totalSteps');
+    const totalWorkout = document.getElementById('totalWorkout');
+    const totalCalories = document.getElementById('totalCalories');
+
+    let fitnessData = JSON.parse(localStorage.getItem('fitnessData')) || [];
+
+    function updateSummary() {
+      let steps = 0, workout = 0, calories = 0;
+      fitnessData.forEach(entry => {
+        steps += entry.steps;
+        workout += entry.workout;
+        calories += entry.calories;
+      });
+
+      totalSteps.textContent = `Total Steps: ${steps}`;
+      totalWorkout.textContent = `Workout Time: ${workout} mins`;
+      totalCalories.textContent = `Calories Burned: ${calories}`;
+    }
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      const entry = {
+        date: document.getElementById('date').value,
+        steps: parseInt(document.getElementById('steps').value),
+        workout: parseInt(document.getElementById('workout').value),
+        calories: parseInt(document.getElementById('calories').value),
+      };
+
+      fitnessData.push(entry);
+      localStorage.setItem('fitnessData', JSON.stringify(fitnessData));
+      updateSummary();
+      form.reset();
+    });
+
+    updateSummary();
+  </script>
+</body>
+</html>

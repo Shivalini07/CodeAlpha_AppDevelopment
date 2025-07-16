@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flashcard Quiz App</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #c2e9fb, #a1c4fd);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    h2 {
+      color: #333;
+      margin-bottom: 1rem;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      width: 400px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transition: 0.3s;
+    }
+
+    .options {
+      margin-top: 1rem;
+    }
+
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 0.5rem 0;
+      padding: 0.8rem;
+      font-size: 1rem;
+      background-color: #4e54c8;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .options button:hover {
+      background-color: #6c6ee7;
+    }
+
+    .controls {
+      margin-top: 1rem;
+    }
+
+    .controls button {
+      margin: 0.3rem;
+      padding: 0.5rem 1.2rem;
+      font-size: 0.9rem;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .controls button:hover {
+      background-color: #555;
+    }
+
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    /* ✅ Animation: Green flash for correct */
+    .correct-effect {
+      animation: correctFlash 0.6s ease-in-out;
+    }
+
+    @keyframes correctFlash {
+      0% { background-color: #d4edda; }
+      50% { background-color: #a8e6a1; }
+      100% { background-color: white; }
+    }
+
+    /* ❌ Optional: Shake for wrong */
+    .wrong-effect {
+      animation: shake 0.3s ease-in-out;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); }
+      75% { transform: translateX(-5px); }
+      100% { transform: translateX(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Flashcard Quiz App</h2>
+
+  <div class="card" id="flashcard">
+    <div id="question">Question here...</div>
+    <div class="options" id="options"></div>
+    <div id="result"></div>
+  </div>
+
+  <div class="controls">
+    <button onclick="prevCard()">Previous</button>
+    <button onclick="nextCard()">Next</button>
+  </div>
+
+  <script>
+    const flashcards = [
+      {
+        question: "What is the capital of France?",
+        options: ["Paris", "London", "Berlin", "Madrid"],
+        answer: "Paris"
+      },
+      {
+        question: "What is 2 + 2?",
+        options: ["3", "4", "5", "22"],
+        answer: "4"
+      },
+      {
+        question: "Who wrote Hamlet?",
+        options: ["Charles Dickens", "Leo Tolstoy", "William Shakespeare", "Mark Twain"],
+        answer: "William Shakespeare"
+      }
+    ];
+
+    let current = 0;
+
+    function showCard() {
+      const card = flashcards[current];
+      document.getElementById("question").textContent = card.question;
+      const optionsDiv = document.getElementById("options");
+      const result = document.getElementById("result");
+      result.textContent = "";
+      optionsDiv.innerHTML = "";
+
+      card.options.forEach(option => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.onclick = () => {
+          if (option === card.answer) {
+            result.textContent = "✅ Correct!";
+            result.style.color = "green";
+            flashEffect("correct");
+          } else {
+            result.textContent = ❌ Wrong! Correct answer: ${card.answer};
+            result.style.color = "red";
+            flashEffect("wrong");
+          }
+        };
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function flashEffect(type) {
+      const cardEl = document.getElementById("flashcard");
+      if (type === "correct") {
+        cardEl.classList.add("correct-effect");
+        setTimeout(() => cardEl.classList.remove("correct-effect"), 600);
+      } else {
+        cardEl.classList.add("wrong-effect");
+        setTimeout(() => cardEl.classList.remove("wrong-effect"), 300);
+      }
+    }
+
+    function nextCard() {
+      current = (current + 1) % flashcards.length;
+      showCard();
+    }
+
+    function prevCard() {
+      current = (current - 1 + flashcards.length) % flashcards.length;
+      showCard();
+    }
+
+    showCard(); // Initialize
+  </script>
+
+</body>
+</html>

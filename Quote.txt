@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Random Quote Generator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+
+    .container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 500px;
+      text-align: center;
+    }
+
+    #quote {
+      font-size: 1.4em;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    #author {
+      font-size: 1em;
+      color: #777;
+      margin-bottom: 30px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      font-size: 1em;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="quote">Loading quote...</div>
+    <div id="author"></div>
+    <button onclick="getNewQuote()">New Quote</button>
+  </div>
+
+  <script>
+    const quotes = [
+      { text: "Be yourself; everyone else is already taken.", author: "Oscar Wilde" },
+      { text: "The purpose of our lives is to be happy.", author: "Dalai Lama" },
+      { text: "In the middle of every difficulty lies opportunity.", author: "Albert Einstein" },
+      { text: "Life is what happens when you're busy making other plans.", author: "John Lennon" },
+      { text: "Success is not final, failure is not fatal: It is the courage to continue that counts.", author: "Winston Churchill" },
+      { text: "Do not watch the clock. Do what it does. Keep going.", author: "Sam Levenson" },
+      { text: "Everything you can imagine is real.", author: "Pablo Picasso" }
+    ];
+
+    function getNewQuote() {
+      const randomIndex = Math.floor(Math.random() * quotes.length);
+      const quote = quotes[randomIndex];
+      document.getElementById('quote').innerText = "${quote.text}";
+      document.getElementById('author').innerText = – ${quote.author};
+    }
+
+    // Show one quote when the app loads
+    window.onload = getNewQuote;
+  </script>
+</body>
+</html>
